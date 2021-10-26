@@ -1,8 +1,15 @@
-import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
+import Routes from "./routes";
+import { ContextProvider } from "./store/context";
 
 function App() {
-  return <div className="App">QTest</div>;
+  return (
+    <ContextProvider>
+      <main className="App">
+        <Routes />
+      </main>
+    </ContextProvider>
+  );
 }
 
 export default App;

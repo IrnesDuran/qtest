@@ -1,0 +1,28 @@
+@import "../../constants/constants";
+
+.PostsListItem {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 20px;
+
+  h4 {
+    color: $accent-primary;
+    padding: 16px;
+    background-color: $dark-color;
+    span {
+      color: $accent-secondary;
+      float: right;
+    }
+  }
+
+  p {
+    padding: 0 16px 16px 16px;
+  }
+
+  &:hover {
+    transform: translateY(-5px) scale(1.01);
+    cursor: pointer;
+    -webkit-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.2);
+  }
+}

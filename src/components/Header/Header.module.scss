@@ -1,0 +1,9 @@
+@import "../../constants/constants";
+
+.Header {
+  position: fixed;
+  background-color: $dark-color;
+  padding: 2rem;
+  width: 100%;
+  z-index: 5;
+}

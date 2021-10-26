@@ -1,0 +1,43 @@
+@import "../../constants/constants";
+@import "../../constants/_mixins";
+
+.MainButton {
+  z-index: 2;
+  button {
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 16px;
+    padding: 12px 30px;
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+
+    &::before {
+      content: " ";
+      background: $app-gradient;
+      @include absolute-full;
+      -webkit-transition: all 0.15s ease-in-out;
+      transition: all 0.15s ease-in-out;
+      z-index: -1;
+      transform: translate(-5px, -5px);
+    }
+
+    &:hover::before {
+      content: " ";
+      background: $app-gradient;
+      @include absolute-full;
+      -webkit-transition: all 0.15s ease-in-out;
+      transition: all 0.15s ease-in-out;
+      z-index: -1;
+      transform: translate(0, 0);
+    }
+
+    &::after {
+      content: " ";
+      border: 2px solid $light-color;
+      @include absolute-full;
+    }
+  }
+}

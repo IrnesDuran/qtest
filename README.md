@@ -1,5 +1,11 @@
 # Getting Started with Create React App
 
+INSTALIRAO SASS, prop-types, react-router-dom
+KORISTICU CONTEXT
+UI elements influenced by Q website
+Rubik font inside index.html
+nameExtractorHoc i Loader nemaju console.loga da ne bi pretrpavali kompnente
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
