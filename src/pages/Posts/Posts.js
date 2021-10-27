@@ -36,11 +36,7 @@ const Posts = ({ greetingsMessage, componentName }) => {
       </NameExtractorHOC>
       {isFetching && posts.length !== 100 && <Loader />}
       {posts.length === 100 && (
-        <span
-          style={{ textAlign: "center", display: "block", paddingBottom: 50 }}
-        >
-          Nothing to load!
-        </span>
+        <span className={classes.fullyLoaded}>Nothing to load!</span>
       )}
     </>
   );
