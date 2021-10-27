@@ -23,15 +23,19 @@ const Posts = ({ greetingsMessage, componentName }) => {
 
   const ctx = useContext(Context); //target the store to extract greetingsMessage which will be defined only once there
   const posts = ctx.posts;
+  const isFetching = ctx.isFetching;
 
   return posts.length === 0 ? (
     <div className={classes.loaderWrapper}>
       <Loader />
     </div>
   ) : (
-    <NameExtractorHOC>
-      <PostsList posts={posts} greetingsMessage={greetingsMessage} />
-    </NameExtractorHOC>
+    <>
+      <NameExtractorHOC>
+        <PostsList posts={posts} greetingsMessage={greetingsMessage} />
+      </NameExtractorHOC>
+      {isFetching && posts.length !== 100 && <Loader />}
+    </>
   );
 };
 

@@ -14,8 +14,8 @@ export const fetchData = async (url) => {
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
-export const getPosts = async () => {
-  const response = await fetchData(`${BASE_URL}/posts`);
+export const getPosts = async (page) => {
+  const response = await fetchData(`${BASE_URL}/posts?_page=${page}&_limit=20`);
   return response;
 };
 
@@ -29,9 +29,9 @@ export const getComments = async (id) => {
   return response;
 };
 
-export const getUserAndComments = async (id) => {
-  const user = await getUser(id);
-  const comments = await getComments(id);
+export const getUserAndComments = async (userId, postId) => {
+  const user = await getUser(userId);
+  const comments = await getComments(postId);
 
   return { user: user, comments: comments };
 };

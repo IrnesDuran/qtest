@@ -24,11 +24,12 @@ const PostsListItem = ({ post, greetingsMessage, componentName }) => {
 
   const history = useHistory();
   const userId = post.userId;
+  const postId = post.id;
   const [postItems, setPostItems] = useState(null);
 
   useEffect(() => {
     const tryFetch = async () => {
-      const postItems = await getUserAndComments(userId);
+      const postItems = await getUserAndComments(userId, postId);
       setPostItems(postItems);
     };
     tryFetch();
