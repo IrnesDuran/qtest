@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import PropTypes from "prop-types";
 import classes from "./Posts.module.scss";
 import Context from "../../store/context";
 import Loader from "../../components/Loader/Loader";
 import PostsList from "../../components/PostsList/PostsList";
 import NameExtractorHOC from "../../components/NameExtractorHOC/NameExtractorHOC";
+import { requiredLogPropTypes } from "../../utils/utils";
 
 /**
  * Posts page or Homepage
@@ -25,7 +25,9 @@ const Posts = ({ greetingsMessage, componentName }) => {
   const posts = ctx.posts;
 
   return posts.length === 0 ? (
-    <Loader />
+    <div className={classes.loaderWrapper}>
+      <Loader />
+    </div>
   ) : (
     <NameExtractorHOC>
       <PostsList posts={posts} greetingsMessage={greetingsMessage} />
@@ -34,8 +36,7 @@ const Posts = ({ greetingsMessage, componentName }) => {
 };
 
 Posts.propTypes = {
-  greetingsMessage: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
+  ...requiredLogPropTypes,
 };
 
 export default Posts;

@@ -1,7 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import classes from "./Header.module.scss";
 import Logo from "../../assets/Logo-nav.svg";
+import { requiredLogPropTypes } from "../../utils/utils";
 
 /**
  * Header component
@@ -28,8 +28,7 @@ const Header = ({ greetingsMessage, componentName }) => {
 };
 
 Header.propTypes = {
-  greetingsMessage: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
+  ...requiredLogPropTypes,
 };
 
 export default React.memo(Header);

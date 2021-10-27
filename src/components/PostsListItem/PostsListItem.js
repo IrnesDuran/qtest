@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import classes from "./PostsListItem.module.scss";
-// import Context from "../../store/context";
-import { getUser } from "../../services/services";
+import { getUserAndComments } from "../../services/services";
+import { Comments } from "../Comments/Comments";
+import NameExtractorHOC from "../NameExtractorHOC/NameExtractorHOC";
 
 /**
  * PostsListItem to display a single post inside Posts List
@@ -22,28 +23,37 @@ const PostsListItem = ({ post, greetingsMessage, componentName }) => {
   console.log(`${greetingsMessage} ${componentName}`);
 
   const history = useHistory();
-  // const ctx = useContext(Context);
-  const [user, setUser] = useState(null);
+  const userId = post.userId;
+  const [postItems, setPostItems] = useState(null);
 
   useEffect(() => {
     const tryFetch = async () => {
-      const user = await getUser(post.userId);
-      setUser(user);
+      const postItems = await getUserAndComments(userId);
+      setPostItems(postItems);
     };
     tryFetch();
-  }, []);
+  }, [userId]);
 
   const clickHandler = () => {
-    history.push(`/post/${post.id}`);
+    history.push({
+      pathname: `/post/${post.id}`,
+      state: { ...postItems, post: post }, //forward state through router since it will never be used anywhere else
+    });
   };
 
   return (
     <div className={classes.PostsListItem} onClick={clickHandler}>
       <h4>
         {post.title}
-        {user?.name && <span>by {user.name}</span>}
+        <span>{postItems ? `by ${postItems.user.name}` : "..."}</span>
       </h4>{" "}
       <p>{post.body}</p>
+      <NameExtractorHOC>
+        <Comments
+          comments={postItems?.comments}
+          greetingsMessage={greetingsMessage}
+        />
+      </NameExtractorHOC>
     </div>
   );
 };

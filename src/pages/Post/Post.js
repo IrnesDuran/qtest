@@ -1,8 +1,38 @@
 import React from "react";
 import classes from "./Post.module.scss";
+import { useLocation } from "react-router-dom";
+import { requiredLogPropTypes } from "../../utils/utils";
 
-const Post = () => {
-  return <div className={classes.Post}>Post</div>;
+/**
+ * Individual post page
+ * @property {string} greetingsMessage forwarded as prop through parent as an assignment requirement
+ * that is why it is not collected through context
+ * @property {string} componentName forwarded as prop through parent as an assignment requirement
+ * @returns {JSX.Element} component itself
+ * @component
+ * @example
+ * return (
+ *     <Post greetingsMessage={ctx.greetingsMessage} componentName={componentName}/>
+ * )
+ */
+const Post = ({ greetingsMessage, componentName }) => {
+  console.log(`${greetingsMessage} ${componentName}`);
+
+  const location = useLocation();
+
+  console.log(location.state);
+
+  return (
+    <div className={classes.Post}>
+      <section className={classes.PostSection}>Post section</section>
+      <section className={classes.comments}>Comments</section>
+      <section className={classes.user}>User details</section>
+    </div>
+  );
+};
+
+Post.propTypes = {
+  ...requiredLogPropTypes,
 };
 
 export default Post;

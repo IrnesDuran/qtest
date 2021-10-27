@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { getPosts } from "../services/services";
 
 //contextModel used only for autocomplete
@@ -6,6 +6,7 @@ const contextModel = {
   searchFieldVisible: false,
   greetingsMessage: "Hello from",
   posts: [],
+  loading: false,
   // getUser: () => {},
 };
 

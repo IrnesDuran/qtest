@@ -17,3 +17,9 @@
   bottom: 0;
   right: 0;
 }
+
+@mixin down_800 {
+  @media (max-width: 800px) {
+    @content;
+  }
+}

@@ -1,0 +1,16 @@
+@import "../../constants/constants";
+
+.Comments {
+  border-top: 1px solid $medium-dark;
+
+  padding: 20px 16px 10px 16px;
+  .comment {
+    color: grey;
+    margin-bottom: 20px;
+    font-size: 14px;
+    b {
+      display: block;
+      text-align: right;
+    }
+  }
+}
