@@ -35,6 +35,13 @@ const Posts = ({ greetingsMessage, componentName }) => {
         <PostsList posts={posts} greetingsMessage={greetingsMessage} />
       </NameExtractorHOC>
       {isFetching && posts.length !== 100 && <Loader />}
+      {posts.length === 100 && (
+        <span
+          style={{ textAlign: "center", display: "block", paddingBottom: 50 }}
+        >
+          Nothing to load!
+        </span>
+      )}
     </>
   );
 };

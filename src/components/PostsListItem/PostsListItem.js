@@ -33,7 +33,7 @@ const PostsListItem = ({ post, greetingsMessage, componentName }) => {
       setPostItems(postItems);
     };
     tryFetch();
-  }, [userId]);
+  }, [userId, postId]);
 
   const clickHandler = () => {
     history.push({

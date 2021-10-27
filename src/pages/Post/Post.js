@@ -2,6 +2,8 @@ import React from "react";
 import classes from "./Post.module.scss";
 import { useLocation } from "react-router-dom";
 import { requiredLogPropTypes } from "../../utils/utils";
+import NameExtractorHOC from "../../components/NameExtractorHOC/NameExtractorHOC";
+import { Comments } from "../../components/Comments/Comments";
 
 /**
  * Individual post page
@@ -25,7 +27,15 @@ const Post = ({ greetingsMessage, componentName }) => {
   return (
     <div className={classes.Post}>
       <section className={classes.PostSection}>Post section</section>
-      <section className={classes.comments}>Comments</section>
+      <section className={classes.comments}>
+        {" "}
+        <NameExtractorHOC>
+          <Comments
+            comments={location.state.comments}
+            greetingsMessage={greetingsMessage}
+          />
+        </NameExtractorHOC>
+      </section>
       <section className={classes.user}>User details</section>
     </div>
   );

@@ -15,7 +15,7 @@ export const fetchData = async (url) => {
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 export const getPosts = async (page) => {
-  const response = await fetchData(`${BASE_URL}/posts?_page=${page}&_limit=20`);
+  const response = await fetchData(`${BASE_URL}/posts?_page=${page}&_limit=5`);
   return response;
 };
 

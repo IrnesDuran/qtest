@@ -44,8 +44,10 @@ export const ContextProvider = (props) => {
     setIsFetching(true);
   };
 
+  //load additional pages
   const moreData = async () => {
     if (data.posts.length !== 100) {
+      //prevent load when total pages have been injected
       const additionalPosts = await getPosts(page + 1);
       setData((prev) => ({
         ...prev,
@@ -56,6 +58,7 @@ export const ContextProvider = (props) => {
     }
   };
 
+  //when scroll reaches bottom of the component/page, isFetching trigers which in turn triggers additional pages load
   useEffect(() => {
     if (isFetching) {
       moreData();
