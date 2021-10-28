@@ -7,8 +7,10 @@ const contextModel = {
   searchFieldVisible: false,
   greetingsMessage: "Hello from",
   posts: [],
+  filteredPosts: [],
   isFetching: false,
   storeUsers: () => {},
+  setFilter: () => {},
 };
 
 const Context = React.createContext(contextModel);
@@ -26,6 +28,8 @@ export const ContextProvider = (props) => {
 
   const [page, setPage] = useState(1);
   const [users, setUsers] = useState([]);
+  const [filteredPosts, setFilteredPost] = useState([]);
+  const [filter, setFilter] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState({
     searchFieldVisible: false,
@@ -33,6 +37,7 @@ export const ContextProvider = (props) => {
     posts: [],
     isFetching: false,
     storeUsers: storeUsersHandler,
+    setFilter: (value) => setFilter(value),
   });
 
   //fetch all posts upon homepage/posts page mount and mount/umount scroll enevt for infinite scroll simulation
@@ -79,8 +84,45 @@ export const ContextProvider = (props) => {
     }
   }, [isFetching, moreData]);
 
+  useEffect(() => {
+    // filter users based on input value, check all user data values (rafined version)
+    const filteredUsersIds =
+      filter !== "" &&
+      users
+        .filter((item) => {
+          const lowercasedFilter = filter.toLowerCase().trim();
+          const rafinedUser = {
+            ...item,
+            address: item.address.city,
+            company: item.company.name,
+          };
+
+          return Object.keys(rafinedUser).some((key) =>
+            rafinedUser[key].toString().toLowerCase().includes(lowercasedFilter)
+          );
+        })
+        .map((user) => user.id);
+
+    //map filtered users ids to identify which posts have same userId in order to show them
+    if (filter !== "" && filteredUsersIds.length !== 0) {
+      const filteredPosts = data.posts.filter((item) => {
+        return filteredUsersIds.find((id) => id === item.userId);
+      });
+      setFilteredPost(filteredPosts);
+    } else {
+      setFilteredPost([]);
+    }
+  }, [filter, users]);
+
   return (
-    <Context.Provider value={{ ...data, isFetching: isFetching, users: users }}>
+    <Context.Provider
+      value={{
+        ...data,
+        isFetching: isFetching,
+        users: users,
+        filteredPosts: filteredPosts,
+      }}
+    >
       {props.children}
     </Context.Provider>
   );
