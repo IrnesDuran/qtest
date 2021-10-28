@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classes from "./PostsList.module.scss";
 import PostsListItem from "../PostsListItem/PostsListItem";
 import NameExtractorHOC from "../NameExtractorHOC/NameExtractorHOC";
+import { requiredInjectedLogPropTypes } from "../../utils/utils";
 
 /**
  * PostsList to display all posts inside Posts page and its wrapper
@@ -33,8 +34,7 @@ const PostsList = ({ posts, greetingsMessage, componentName }) => {
 
 PostsList.propTypes = {
   posts: PropTypes.array.isRequired,
-  greetingsMessage: PropTypes.string.isRequired,
-  componentName: PropTypes.string,
+  ...requiredInjectedLogPropTypes,
 };
 
 export default PostsList;

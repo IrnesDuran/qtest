@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getPosts } from "../services/services";
+import { useLocation } from "react-router-dom";
 
 //contextModel used only for autocomplete
 const contextModel = {
@@ -7,20 +8,32 @@ const contextModel = {
   greetingsMessage: "Hello from",
   posts: [],
   isFetching: false,
-  // getUser: () => {},
+  storeUsers: () => {},
 };
 
 const Context = React.createContext(contextModel);
 
 export const ContextProvider = (props) => {
+  const location = useLocation();
+
+  const storeUsersHandler = (user) => {
+    const userId = user.id;
+    setUsers((prev) => {
+      const existingUser = prev.find((user) => user.id === userId);
+      return existingUser ? prev : [...prev, user];
+    });
+  };
+
+  const [page, setPage] = useState(1);
+  const [users, setUsers] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState({
     searchFieldVisible: false,
     greetingsMessage: "Hello from",
     posts: [],
     isFetching: false,
+    storeUsers: storeUsersHandler,
   });
-  const [page, setPage] = useState(1);
-  const [isFetching, setIsFetching] = useState(false);
 
   //fetch all posts upon homepage/posts page mount and mount/umount scroll enevt for infinite scroll simulation
   useEffect(() => {
@@ -35,38 +48,39 @@ export const ContextProvider = (props) => {
 
   //we registered our isScrolling function to listen to the event scroll. So now, whenever a user scrolls, the isScrolling is called.
   const isScrolling = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
-    ) {
-      return;
+    if (location.pathname === "/posts") {
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight
+      ) {
+        return;
+      }
+      setIsFetching(true);
     }
-    setIsFetching(true);
   };
 
   //load additional pages
-  const moreData = async () => {
-    if (data.posts.length !== 100) {
-      //prevent load when total pages have been injected
-      const additionalPosts = await getPosts(page + 1);
-      setData((prev) => ({
-        ...prev,
-        posts: [...prev.posts, ...additionalPosts],
-      }));
-      setPage(page + 1);
-      setIsFetching(false);
-    }
-  };
+  const moreData = useCallback(async () => {
+    //prevent load when total pages have been injected
+    const additionalPosts = await getPosts(page + 1);
+    setData((prev) => ({
+      ...prev,
+      posts: [...prev.posts, ...additionalPosts],
+    }));
+    setPage((prevPage) => prevPage + 1);
+    setIsFetching(false);
+  }, [page]);
 
   //when scroll reaches bottom of the component/page, isFetching trigers which in turn triggers additional pages load
+  const postsSize = data.posts.length;
   useEffect(() => {
-    if (isFetching) {
+    if (isFetching && postsSize !== 100) {
       moreData();
     }
-  }, [isFetching]);
+  }, [isFetching, moreData]);
 
   return (
-    <Context.Provider value={{ ...data, isFetching: isFetching }}>
+    <Context.Provider value={{ ...data, isFetching: isFetching, users: users }}>
       {props.children}
     </Context.Provider>
   );

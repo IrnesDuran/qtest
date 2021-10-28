@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classes from "./Comment.module.scss";
+import { requiredInjectedLogPropTypes } from "../../utils/utils";
 
 export const Comments = ({ comments, greetingsMessage, componentName }) => {
   console.log(`${greetingsMessage} ${componentName}`);
@@ -32,8 +33,7 @@ Comments.propTypes = {
       email: PropTypes.string.isRequired,
     }).isRequired
   ),
-  greetingsMessage: PropTypes.string.isRequired,
-  componentName: PropTypes.string,
+  ...requiredInjectedLogPropTypes,
 };
 
 export default React.memo(Comments);

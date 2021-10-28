@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import classes from "./PostsListItem.module.scss";
 import { getUserAndComments } from "../../services/services";
 import { Comments } from "../Comments/Comments";
 import NameExtractorHOC from "../NameExtractorHOC/NameExtractorHOC";
+import { requiredInjectedLogPropTypes } from "../../utils/utils";
+import Context from "../../store/context";
 
 /**
  * PostsListItem to display a single post inside Posts List
@@ -23,6 +25,7 @@ const PostsListItem = ({ post, greetingsMessage, componentName }) => {
   console.log(`${greetingsMessage} ${componentName}`);
 
   const history = useHistory();
+  const ctx = useContext(Context);
   const userId = post.userId;
   const postId = post.id;
   const [postItems, setPostItems] = useState(null);
@@ -30,10 +33,11 @@ const PostsListItem = ({ post, greetingsMessage, componentName }) => {
   useEffect(() => {
     const tryFetch = async () => {
       const postItems = await getUserAndComments(userId, postId);
+      ctx.storeUsers(postItems.user); // store users to context so we can use them for filtering based on user data
       setPostItems(postItems);
     };
     tryFetch();
-  }, [userId, postId]);
+  }, [userId, postId, ctx]);
 
   const clickHandler = () => {
     history.push({
@@ -66,8 +70,7 @@ PostsListItem.propTypes = {
     title: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
   }).isRequired,
-  greetingsMessage: PropTypes.string.isRequired,
-  componentName: PropTypes.string,
+  ...requiredInjectedLogPropTypes,
 };
 
 export default PostsListItem;

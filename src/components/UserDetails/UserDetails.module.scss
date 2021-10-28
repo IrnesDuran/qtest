@@ -1,0 +1,8 @@
+@import "../../constants/constants";
+.UserDetails {
+  padding: 20px;
+  border-top: 1px solid $medium-dark;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}

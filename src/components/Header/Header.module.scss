@@ -1,10 +1,28 @@
 @import "../../constants/constants";
+@import "../../constants/_mixins";
 
 .Header {
   position: fixed;
   top: 0;
+  min-height: 107px;
+  box-sizing: border-box;
   background-color: $dark-color;
   padding: 2rem;
   width: 100%;
   z-index: 5;
+  @include flex-center;
+
+  .logo {
+    position: absolute;
+    left: 2rem;
+  }
+
+  .searchBar {
+    padding: 12px;
+    min-width: 300px;
+    margin-right: 30px;
+  }
+  .searchBar:focus-visible {
+    outline: 3px solid $accent-secondary;
+  }
 }

@@ -18,7 +18,7 @@ import { requiredLogPropTypes } from "../../utils/utils";
  *     <Posts greetingsMessage={ctx.greetingsMessage} componentName={componentName}/>
  * )
  */
-const Posts = ({ greetingsMessage, componentName }) => {
+const Posts = ({ greetingsMessage, componentName, ...props }) => {
   console.log(`${greetingsMessage} ${componentName}`);
 
   const ctx = useContext(Context); //target the store to extract greetingsMessage which will be defined only once there

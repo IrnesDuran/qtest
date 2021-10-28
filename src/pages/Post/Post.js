@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 import { requiredLogPropTypes } from "../../utils/utils";
 import NameExtractorHOC from "../../components/NameExtractorHOC/NameExtractorHOC";
 import { Comments } from "../../components/Comments/Comments";
+import FullPost from "../../components/FullPost/FullPost";
+import UserDetails from "../../components/UserDetails/UserDetails";
 
 /**
  * Individual post page
@@ -22,13 +24,17 @@ const Post = ({ greetingsMessage, componentName }) => {
 
   const location = useLocation();
 
-  console.log(location.state);
-
   return (
     <div className={classes.Post}>
-      <section className={classes.PostSection}>Post section</section>
+      <section className={classes.PostSection}>
+        <NameExtractorHOC>
+          <FullPost
+            post={location.state.post}
+            greetingsMessage={greetingsMessage}
+          />
+        </NameExtractorHOC>
+      </section>
       <section className={classes.comments}>
-        {" "}
         <NameExtractorHOC>
           <Comments
             comments={location.state.comments}
@@ -36,7 +42,14 @@ const Post = ({ greetingsMessage, componentName }) => {
           />
         </NameExtractorHOC>
       </section>
-      <section className={classes.user}>User details</section>
+      <section className={classes.user}>
+        <NameExtractorHOC>
+          <UserDetails
+            user={location.state.user}
+            greetingsMessage={greetingsMessage}
+          />
+        </NameExtractorHOC>
+      </section>
     </div>
   );
 };

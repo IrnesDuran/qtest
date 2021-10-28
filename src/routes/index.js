@@ -10,7 +10,11 @@ const Routes = () => {
 
   return ctx.posts.length !== 0 ? (
     <>
-      <Header greetingsMessage={ctx.greetingsMessage} componentName="Header" />
+      <Header
+        greetingsMessage={ctx.greetingsMessage}
+        componentName="Header"
+        ctx={ctx}
+      />
       <Switch>
         {routes.map(({ Component, path, exact, componentName }) => {
           return (

@@ -1,0 +1,10 @@
+.FullPost {
+  padding: 20px;
+  h3::first-letter {
+    text-transform: uppercase;
+  }
+
+  p::first-letter {
+    text-transform: uppercase;
+  }
+}
