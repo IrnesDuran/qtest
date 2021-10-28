@@ -9,6 +9,7 @@ const contextModel = {
   posts: [],
   filteredPosts: [],
   isFetching: false,
+  beingFiltered: false,
   storeUsers: () => {},
   setFilter: () => {},
 };
@@ -30,6 +31,7 @@ export const ContextProvider = (props) => {
   const [users, setUsers] = useState([]);
   const [filteredPosts, setFilteredPost] = useState([]);
   const [filter, setFilter] = useState("");
+  const [beingFiltered, setBeingFiltered] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState({
     searchFieldVisible: false,
@@ -37,7 +39,14 @@ export const ContextProvider = (props) => {
     posts: [],
     isFetching: false,
     storeUsers: storeUsersHandler,
-    setFilter: (value) => setFilter(value),
+    setFilter: (value) => {
+      if (value === "") {
+        setBeingFiltered(false);
+      } else {
+        setBeingFiltered(true);
+      }
+      setFilter(value);
+    },
   });
 
   //fetch all posts upon homepage/posts page mount and mount/umount scroll enevt for infinite scroll simulation
@@ -53,14 +62,18 @@ export const ContextProvider = (props) => {
 
   //we registered our isScrolling function to listen to the event scroll. So now, whenever a user scrolls, the isScrolling is called.
   const isScrolling = () => {
-    if (location.pathname === "/posts") {
+    if (
+      (location.pathname === "/posts" || location.pathname === "/") &&
+      !isFetching
+    ) {
+      //cheat for first app mount
       if (
         window.innerHeight + document.documentElement.scrollTop !==
         document.documentElement.offsetHeight
       ) {
         return;
       }
-      setIsFetching(true);
+      if (!beingFiltered) setIsFetching(true);
     }
   };
 
@@ -79,10 +92,10 @@ export const ContextProvider = (props) => {
   //when scroll reaches bottom of the component/page, isFetching trigers which in turn triggers additional pages load
   const postsSize = data.posts.length;
   useEffect(() => {
-    if (isFetching && postsSize !== 100) {
+    if (isFetching && postsSize !== 100 && !beingFiltered) {
       moreData();
     }
-  }, [isFetching, moreData]);
+  }, [isFetching, moreData, beingFiltered]);
 
   useEffect(() => {
     // filter users based on input value, check all user data values (rafined version)
@@ -121,6 +134,7 @@ export const ContextProvider = (props) => {
         isFetching: isFetching,
         users: users,
         filteredPosts: filteredPosts,
+        beingFiltered: beingFiltered,
       }}
     >
       {props.children}

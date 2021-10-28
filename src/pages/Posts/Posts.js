@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import classes from "./Posts.module.scss";
 import Context from "../../store/context";
 import Loader from "../../components/Loader/Loader";
@@ -18,16 +18,21 @@ import { requiredLogPropTypes } from "../../utils/utils";
  *     <Posts greetingsMessage={ctx.greetingsMessage} componentName={componentName}/>
  * )
  */
-const Posts = ({ greetingsMessage, componentName, ...props }) => {
+const Posts = ({ greetingsMessage, componentName }) => {
   console.log(`${greetingsMessage} ${componentName}`);
 
   const ctx = useContext(Context); //target the store to extract greetingsMessage which will be defined only once there
   const posts = ctx.posts;
   const filteredPosts = ctx.filteredPosts;
-  const postsToDisplay = filteredPosts.length !== 0 ? filteredPosts : posts;
+  const beingFiltered = ctx.beingFiltered;
+  // const postsToDisplay = beingFiltered ? filteredPosts : posts;
   const isFetching = ctx.isFetching;
 
-  console.log(filteredPosts);
+  const [postsToDisplay, setPostsToDisplay] = useState([]);
+
+  useEffect(() => {
+    beingFiltered ? setPostsToDisplay(filteredPosts) : setPostsToDisplay(posts);
+  }, [beingFiltered, posts, filteredPosts]);
 
   return posts.length === 0 ? (
     <div className={classes.loaderWrapper}>
@@ -38,7 +43,7 @@ const Posts = ({ greetingsMessage, componentName, ...props }) => {
       <NameExtractorHOC>
         <PostsList posts={postsToDisplay} greetingsMessage={greetingsMessage} />
       </NameExtractorHOC>
-      {isFetching && posts.length !== 100 && <Loader />}
+      {isFetching && posts.length !== 100 && !beingFiltered && <Loader />}
       {posts.length === 100 && (
         <span className={classes.fullyLoaded}>Nothing to load!</span>
       )}
