@@ -34,7 +34,7 @@ const Header = ({ greetingsMessage, componentName, ctx }) => {
       </Link>
       {location.pathname === "/posts" && (
         <input
-          // ref={inputRef}
+          value={ctx.filter}
           className={classes.searchBar}
           type="search"
           placeholder="Filter user data..."

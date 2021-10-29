@@ -10,6 +10,7 @@ const contextModel = {
   filteredPosts: [],
   isFetching: false,
   beingFiltered: false,
+  filter: "",
   storeUsers: () => {},
   setFilter: () => {},
 };
@@ -117,14 +118,20 @@ export const ContextProvider = (props) => {
         .map((user) => user.id);
 
     //map filtered users ids to identify which posts have same userId in order to show them
-    if (filter !== "" && filteredUsersIds.length !== 0) {
-      const filteredPosts = data.posts.filter((item) => {
-        return filteredUsersIds.find((id) => id === item.userId);
-      });
-      setFilteredPost(filteredPosts);
-    } else {
-      setFilteredPost([]);
-    }
+    let timer1 = setTimeout(() => {
+      if (filter !== "" && filteredUsersIds.length !== 0) {
+        const filteredPosts = data.posts.filter((item) => {
+          return filteredUsersIds.find((id) => id === item.userId);
+        });
+        setFilteredPost(filteredPosts);
+      } else {
+        setFilteredPost([]);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer1);
+    };
   }, [filter, users]);
 
   return (
@@ -133,6 +140,7 @@ export const ContextProvider = (props) => {
         ...data,
         isFetching: isFetching,
         users: users,
+        filter: filter,
         filteredPosts: filteredPosts,
         beingFiltered: beingFiltered,
       }}

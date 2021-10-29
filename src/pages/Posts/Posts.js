@@ -25,16 +25,13 @@ const Posts = ({ greetingsMessage, componentName }) => {
   const posts = ctx.posts;
   const filteredPosts = ctx.filteredPosts;
   const beingFiltered = ctx.beingFiltered;
-  // const postsToDisplay = beingFiltered ? filteredPosts : posts;
-  const isFetching = ctx.isFetching;
-
   const [postsToDisplay, setPostsToDisplay] = useState([]);
 
   useEffect(() => {
     beingFiltered ? setPostsToDisplay(filteredPosts) : setPostsToDisplay(posts);
   }, [beingFiltered, posts, filteredPosts]);
 
-  return posts.length === 0 ? (
+  return posts.length === 0 && beingFiltered ? (
     <div className={classes.loaderWrapper}>
       <Loader />
     </div>
@@ -43,9 +40,11 @@ const Posts = ({ greetingsMessage, componentName }) => {
       <NameExtractorHOC>
         <PostsList posts={postsToDisplay} greetingsMessage={greetingsMessage} />
       </NameExtractorHOC>
-      {isFetching && posts.length !== 100 && !beingFiltered && <Loader />}
-      {posts.length === 100 && (
+      {posts.length === 100 && !beingFiltered && (
         <span className={classes.fullyLoaded}>Nothing to load!</span>
+      )}
+      {filteredPosts.length === 0 && beingFiltered && (
+        <span className={classes.fullyLoaded}>No match found!</span>
       )}
     </>
   );
