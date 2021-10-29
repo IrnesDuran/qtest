@@ -25,7 +25,7 @@ Create a React application that shows a list of Posts and associated post Commen
 Push the code to github + describe the build/run process in a Readme file
 Write approximate time needed to finish the assignment
 
-## Feataures
+## Features
 
 Create 2 routes: '/posts' & 'post/{id}'.
 Posts route should show a list of posts and associated comments. Every post should have a user's name associated.
