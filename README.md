@@ -17,7 +17,7 @@ All rendered components have console.log('${propsmessage} ${componentName}') req
 
 Filtering note: Request stated that post filtering should use user data for filtering purposes. Since this request was slightly opet for discussion, rafined userdata object has been used (including name, email, website,company.name and address.city). Comparation on filtering results can be verified by clicking on individual post component in the bottom part under "About the author:"
 
-There were only few test perforemd as a showcase, all testing scenarios have not been remotely covered by test cases.
+Due to a lack of practical experience, no unit test have been performed
 
 ## Test overview
 
